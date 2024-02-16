@@ -8,21 +8,20 @@ import subprocess
 mod = "mod4"
 keys = [
 
-    Key([mod], "x", lazy.spawn("firefox"), desc="Firefox"),
+    Key([mod], "f", lazy.spawn("firefox"), desc="Firefox"),
+    Key([mod], "x", lazy.spawn("tor"), desc="Tor"),
 
-    Key([mod], "s", lazy.spawn("spotify"), desc="spotify"),
+    Key([mod], "s", lazy.spawn("spotify-launcher"), desc="spotify"),
 
-    Key([mod], "z", lazy.spawn("terminator"), desc="Terminator"),
+    Key([mod], "return", lazy.spawn("terminator"), desc="Terminator"),
 
-    Key([mod], "c", lazy.spawn("telegram-desktop"), desc="Telegram"),
+    Key([mod], "t", lazy.spawn("telegram-desktop"), desc="Telegram"),
 
-    Key([mod], "return", lazy.layout.toggle_split(), desc="Column"),
+    Key([mod], "i", lazy.window.toggle_floating(), desc="Floating"),
 
-    Key([mod], "t", lazy.window.toggle_floating(), desc="Floating"),
+    Key([mod], "space", lazy.window.toggle_fullscreen(), desc="Fscreen"),
 
-    Key([mod], "f", lazy.window.toggle_fullscreen(), desc="Fscreen"),
-
-    Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
+    Key([mod], "backspace", lazy.window.kill(), desc="Kill focused window"),
 
     Key([mod], "tab", lazy.next_layout(), desc="Toggle next layout"),
 
@@ -36,18 +35,17 @@ keys = [
     # Volume
     Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%")),
     Key([], "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5% ")),
-    Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ 0%")),
+    Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")),
 
     # Brightness
-    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl -e set 10%+")),
-    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl -e set 10%-")),
+    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set 5%+")),
+    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 5%-")),
 
     # Switch between windows
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
     Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
     Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
-    Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
 
     # Move windows between columns
     Key([mod, "shift"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
@@ -108,14 +106,14 @@ layouts = [
 ]
 
 # COLORS
-colo = ["#36BFB1",
-        "#038C73",
-        "#02735E",
-        "#014034",
-        "#0D0D0D",
-        "#042326",
-        "#0A3A40",
-        "#0F5959"]
+colo = ["#1E0B26",
+        "#2B1E59",
+        "#43AED9",
+        "#6FBFA8",
+        "#CAF272",
+        "#38172C",
+        "#3E0F3C",
+        "#201D56"]
 
 
 # SCREENS
@@ -134,7 +132,7 @@ def pline(rl, fg, bg):
 
 
 widget_defaults = dict(
-    font="EnvyCodeR Nerd Font Regular",
+    font="ProFontWindows Nerd Font Regular",
     fontsize=16,
     padding=3,
     background=colo[0]
@@ -143,14 +141,10 @@ extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        wallpaper="~/wallpaper/first-colection/arco.png",
+        wallpaper="~/.config/qtile/wppr5.jpg",
         wallpaper_mode="fill",
         top=bar.Bar(
             [
-                widget.CurrentLayoutIcon(
-                    scale=0.75,
-                    background=colo[3]
-                ),
                 pline(0, colo[3], colo[6]),
                 widget.GroupBox(
                     highlight_method="block",
@@ -170,9 +164,8 @@ screens = [
 
                 pline(1, colo[2], colo[0]),
                 widget.Net(  # requires python-psutil
-                    interface="wlan0",
-                    format=" wlan0: {up}   {down} mbps",
-                    update_interval=5,
+                    format="{up:6.2f}   {down:6.2f} mbps",
+                    update_interval=1,
                     background=colo[2]
                 ),
                 pline(1, colo[5], colo[2]),
@@ -187,7 +180,7 @@ screens = [
                     background=colo[3]
                 ),
                 widget.Volume(
-                    format="percent",
+                    format="{percent}",
                     background=colo[3]
                 ),
                 pline(1, colo[4], colo[3]),
@@ -199,7 +192,7 @@ screens = [
                     ),
                 pline(1, colo[1], colo[4]),
                 widget.Clock(
-                    format="󰥔 %I:%M %Y/%m/%d ",
+                    format="%I:%M - %Y/%m/%d ",
                     background=colo[1]
                 ),
             ],
