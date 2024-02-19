@@ -9,7 +9,8 @@ mod = "mod4"
 keys = [
 
     Key([mod], "f", lazy.spawn("firefox"), desc="Firefox"),
-    Key([mod], "x", lazy.spawn("tor"), desc="Tor"),
+
+    Key([mod], "x", lazy.spawn("tor"), desc="tor"),
 
     Key([mod], "s", lazy.spawn("spotify-launcher"), desc="spotify"),
 
@@ -90,7 +91,7 @@ layouts = [
                    border_width=4,
                    margin=6,
                    border_normal="#000000",
-                   border_focus="#0F6466",
+                   border_focus="#D904A0",
                    margin_on_single=0),
     layout.Max(),
     # layout.Stack(num_stacks=2),
@@ -106,11 +107,11 @@ layouts = [
 ]
 
 # COLORS
-colo = ["#1E0B26",
-        "#2B1E59",
-        "#43AED9",
-        "#6FBFA8",
-        "#CAF272",
+colo = ["#D904A0",
+        "#7B3DE1",
+        "#1800B5",
+        "#1B005D",
+        "#010326",
         "#38172C",
         "#3E0F3C",
         "#201D56"]
@@ -141,10 +142,14 @@ extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        wallpaper="~/.config/qtile/wppr5.jpg",
+        wallpaper="~/.config/qtile/circle.jpg",
         wallpaper_mode="fill",
         top=bar.Bar(
             [
+                widget.TextBox(
+                    text="󰣇",
+                    background=colo[3]
+                ),
                 pline(0, colo[3], colo[6]),
                 widget.GroupBox(
                     highlight_method="block",
