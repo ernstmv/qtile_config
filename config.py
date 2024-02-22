@@ -121,10 +121,7 @@ colo = ["#D904A0",
 # To achieve a Powerline effect without installing anything additionally, you insert Unicode characters ("" and "") between the widgets.
 # Instead of copy-pasting the almost same lines over and over again, I used my limited Python skills to write this neat function.
 def pline(rl, fg, bg):
-    if rl == 0:
-        uc = ""
-    else:
-        uc = ""
+    uc = "" if rl == 0 else ""
     return widget.TextBox(text=uc,
                           padding=0,
                           fontsize=22,
@@ -175,7 +172,7 @@ screens = [
                 ),
                 pline(1, colo[5], colo[2]),
                 widget.Backlight(
-                    format="  {percent:2.0%}",
+                    format="   {percent:2.0%}",
                     backlight_name="intel_backlight",
                     background=colo[5]
                 ),
