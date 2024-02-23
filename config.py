@@ -20,11 +20,9 @@ keys = [
 
     Key([mod], "i", lazy.window.toggle_floating(), desc="Floating"),
 
-    Key([mod], "space", lazy.window.toggle_fullscreen(), desc="Fscreen"),
-
     Key([mod], "backspace", lazy.window.kill(), desc="Kill focused window"),
 
-    Key([mod], "tab", lazy.next_layout(), desc="Toggle next layout"),
+    Key([mod], "space", lazy.next_layout(), desc="Full screen"),
 
     Key([mod], "a", lazy.spawn("arduino-ide"), desc="Launch arduino"),
 
@@ -73,7 +71,14 @@ mouse = [
 ]
 
 # GROUPS
-groups = [Group(i) for i in "12345"]
+groups = [
+        Group("1", label=" "),
+        Group("2", label=" "),
+        Group("3", label=" "),
+        Group("4", label="󰱯 "),
+        Group("5", label="󰈹 "),
+        ]
+
 for i in groups:
     keys.extend(
         [
@@ -91,7 +96,7 @@ layouts = [
                    border_width=4,
                    margin=6,
                    border_normal="#000000",
-                   border_focus="#D904A0",
+                   border_focus="#404040",
                    margin_on_single=0),
     layout.Max(),
     # layout.Stack(num_stacks=2),
@@ -107,19 +112,17 @@ layouts = [
 ]
 
 # COLORS
-colo = ["#D904A0",
-        "#7B3DE1",
-        "#1800B5",
-        "#1B005D",
-        "#010326",
-        "#38172C",
-        "#3E0F3C",
-        "#201D56"]
+colo = ["#7F0008",
+        "#BF000C",
+        "#0D0D0D",
+        "#404040",
+        "#0D0D0D",
+        "#7F0008",
+        "#BF000C",
+        "#0D0D0D"]
 
 
 # SCREENS
-# To achieve a Powerline effect without installing anything additionally, you insert Unicode characters ("" and "") between the widgets.
-# Instead of copy-pasting the almost same lines over and over again, I used my limited Python skills to write this neat function.
 def pline(rl, fg, bg):
     uc = "" if rl == 0 else ""
     return widget.TextBox(text=uc,
@@ -139,12 +142,13 @@ extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        wallpaper="~/.config/qtile/circle.jpg",
+        wallpaper="~/.config/qtile/wpp1.png",
         wallpaper_mode="fill",
         top=bar.Bar(
             [
                 widget.TextBox(
-                    text="󰣇",
+                    text="󰣇 ",
+                    fontsize=25,
                     background=colo[3]
                 ),
                 pline(0, colo[3], colo[6]),
@@ -156,9 +160,10 @@ screens = [
                 pline(0, colo[6], colo[7]),
                 widget.TaskList(
                     highlight_method="block",
-                    max_title_width=300,
-                    border="#042940",
+                    max_title_width=30,
+                    border="#404040",
                     padding=2,
+                    margin=0,
                     background=colo[7]
                 ),
                 pline(0, colo[7], colo[0]),
@@ -181,7 +186,7 @@ screens = [
                     text="󱄠",
                     background=colo[3]
                 ),
-                widget.Volume(
+                widget.Volume( # Requires alsa-utils
                     format="{percent}",
                     background=colo[3]
                 ),
