@@ -12,7 +12,7 @@ keys = [
 
     Key([mod], "x", lazy.spawn("tor"), desc="tor"),
 
-    Key([mod], "s", lazy.spawn("spotify-launcher"), desc="spotify"),
+    Key([mod], "s", lazy.spawn("spotify"), desc="spotify"),
 
     Key([mod], "return", lazy.spawn("terminator"), desc="Terminator"),
 
@@ -92,11 +92,11 @@ for i in groups:
 
 # LAYOUTS
 layouts = [
-    layout.Columns(border_focus_stack=["#0FC2C0", "#0FC2C0"],
+    layout.Columns(border_focus_stack=["#F2F2F2", "#F2F2F2"],
                    border_width=4,
                    margin=6,
                    border_normal="#000000",
-                   border_focus="#404040",
+                   border_focus="#F2F2F2",
                    margin_on_single=0),
     layout.Max(),
     # layout.Stack(num_stacks=2),
@@ -112,13 +112,13 @@ layouts = [
 ]
 
 # COLORS
-colo = ["#7F0008",
-        "#BF000C",
+colo = ["#F2F2F2",
         "#0D0D0D",
-        "#404040",
+        "#F2F2F2",
         "#0D0D0D",
-        "#7F0008",
-        "#BF000C",
+        "#F2F2F2",
+        "#0D0D0D",
+        "#F2F2F2",
         "#0D0D0D"]
 
 
@@ -169,9 +169,12 @@ screens = [
                 pline(0, colo[7], colo[0]),
                 widget.Spacer(),
 
+
+
                 pline(1, colo[2], colo[0]),
                 widget.Net(  # requires python-psutil
                     format="{up:6.2f}   {down:6.2f} mbps",
+                    foreground="#0D0D0D",
                     update_interval=1,
                     background=colo[2]
                 ),
@@ -195,6 +198,7 @@ screens = [
                     charge_char="󰂅",
                     discharge_char="󰂎",
                     format="{char} {percent:2.0%}",
+                    foreground="#0D0D0D",
                     background=colo[4]
                     ),
                 pline(1, colo[1], colo[4]),
