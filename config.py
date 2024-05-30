@@ -8,15 +8,15 @@ import subprocess
 mod = "mod4"
 keys = [
 
-    Key([mod], "f", lazy.spawn("firefox"), desc="Firefox"),
+    Key([mod], "f", lazy.spawn("chromium"), desc="Firefox"),
 
-    Key([mod], "x", lazy.spawn("tor"), desc="tor"),
+    Key([mod], 'q', lazy.spaw('virt-manager'), desc='quemu'),
 
-    Key([mod], "s", lazy.spawn("spotify"), desc="spotify"),
+    Key([mod], "w", lazy.spawn("whatsapp-for-linux"), desc="whatsapp"),
+
+    Key([mod], "s", lazy.spawn("spotify-launcher"), desc="spotify"),
 
     Key([mod], "return", lazy.spawn("terminator"), desc="Terminator"),
-
-    Key([mod], "t", lazy.spawn("telegram-desktop"), desc="Telegram"),
 
     Key([mod], "i", lazy.window.toggle_floating(), desc="Floating"),
 
@@ -37,8 +37,8 @@ keys = [
     Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")),
 
     # Brightness
-    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set 5%+")),
-    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 5%-")),
+    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set 10%+")),
+    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10%-")),
 
     # Switch between windows
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
@@ -92,12 +92,14 @@ for i in groups:
 
 # LAYOUTS
 layouts = [
-    layout.Columns(border_focus_stack=["#F2F2F2", "#F2F2F2"],
-                   border_width=4,
+    layout.Columns(
+                   border_width=1,
                    margin=6,
-                   border_normal="#000000",
-                   border_focus="#F2F2F2",
-                   margin_on_single=0),
+                   border_normal="#012340",
+                   border_focus="#F27B13",
+                   border_on_single=True,
+                   num_columns=3,
+                   margin_on_single=20),
     layout.Max(),
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
@@ -112,10 +114,10 @@ layouts = [
 ]
 
 # COLORS
-colo = ["#F2F2F2",
-        "#0D0D0D",
-        "#F2F2F2",
-        "#0D0D0D",
+colo = ["#012340",  # BACKGROUND
+        "#F27B13",  # FONTS
+        "#011C26",  # BLACK
+        "#FFFFFF",
         "#F2F2F2",
         "#0D0D0D",
         "#F2F2F2",
@@ -123,17 +125,8 @@ colo = ["#F2F2F2",
 
 
 # SCREENS
-def pline(rl, fg, bg):
-    uc = "" if rl == 0 else ""
-    return widget.TextBox(text=uc,
-                          padding=0,
-                          fontsize=22,
-                          foreground=fg,
-                          background=bg)
-
-
 widget_defaults = dict(
-    font="ProFontWindows Nerd Font Regular",
+    font="Comfortaa Bold",
     fontsize=16,
     padding=3,
     background=colo[0]
@@ -142,70 +135,61 @@ extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        wallpaper="~/.config/qtile/wpp1.png",
+        wallpaper="~/.config/qtile/wpp.jpeg",
         wallpaper_mode="fill",
         top=bar.Bar(
             [
-                widget.TextBox(
-                    text="󰣇 ",
-                    fontsize=25,
-                    background=colo[3]
+                widget.Clock(
+                    format="%I:%M  %Y.%m.%d ",
+                    foreground=colo[1],
+                    background=colo[2]
                 ),
-                pline(0, colo[3], colo[6]),
                 widget.GroupBox(
-                    highlight_method="block",
-                    background=colo[6],
-                    this_current_screen_border="#000000"
+                    highlight_method="text",
+                    highlight_color=colo[1],
+                    this_current_screen_border=colo[1],
+                    background=colo[0]
                 ),
-                pline(0, colo[6], colo[7]),
-                widget.TaskList(
-                    highlight_method="block",
-                    max_title_width=30,
-                    border="#404040",
-                    padding=2,
-                    margin=0,
-                    background=colo[7]
-                ),
-                pline(0, colo[7], colo[0]),
                 widget.Spacer(),
 
+                widget.TextBox(
+                    text='|| LEVIATHAN ||',
+                    fontsize=20,
+                    foreground=colo[1],
+                    background=colo[0]
+                    ),
 
 
-                pline(1, colo[2], colo[0]),
+                widget.Spacer(),
                 widget.Net(  # requires python-psutil
                     format="{up:6.2f}   {down:6.2f} mbps",
-                    foreground="#0D0D0D",
+                    foreground=colo[3],
                     update_interval=1,
                     background=colo[2]
                 ),
-                pline(1, colo[5], colo[2]),
                 widget.Backlight(
                     format="   {percent:2.0%}",
                     backlight_name="intel_backlight",
-                    background=colo[5]
+                    foreground=colo[3],
+                    background=colo[2]
                 ),
-                pline(1, colo[3], colo[5]),
                 widget.TextBox(
                     text="󱄠",
-                    background=colo[3]
+                    foreground=colo[3],
+                    background=colo[2]
                 ),
-                widget.Volume( # Requires alsa-utils
+                widget.Volume(  # Requires alsa-utils
                     format="{percent}",
-                    background=colo[3]
+                    foreground=colo[3],
+                    background=colo[2]
                 ),
-                pline(1, colo[4], colo[3]),
                 widget.Battery(
                     charge_char="󰂅",
+                    foreground=colo[3],
                     discharge_char="󰂎",
                     format="{char} {percent:2.0%}",
-                    foreground="#0D0D0D",
-                    background=colo[4]
+                    background=colo[2]
                     ),
-                pline(1, colo[1], colo[4]),
-                widget.Clock(
-                    format="%I:%M - %Y/%m/%d ",
-                    background=colo[1]
-                ),
             ],
             26,
         ),
