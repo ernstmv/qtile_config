@@ -16,6 +16,8 @@ keys = [
 
     Key([mod], "a", lazy.spawn("arduino"), desc="arduino"),
 
+    Key([mod], "p", lazy.spawncmd(), desc="Spawn prompt"),
+
     Key([mod], "return", lazy.spawn("terminator"), desc="Terminator"),
 
     Key([mod], "i", lazy.window.toggle_floating(), desc="Floating"),
@@ -85,9 +87,14 @@ keys = [
 
 # MOUSE
 mouse = [
-    Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
-    Click([mod], "Button2", lazy.window.bring_to_front()),
+    Drag(
+        [mod], "Button1",
+        lazy.window.set_position_floating(), start=lazy.window.get_position()),
+    Drag(
+        [mod], "Button3",
+        lazy.window.set_size_floating(), start=lazy.window.get_size()),
+    Click(
+        [mod], "Button2", lazy.window.bring_to_front()),
 ]
 
 # GROUPS
@@ -106,7 +113,7 @@ for i in groups:
                 desc="Switch to group {}".format(i.name)),
             Key([mod, "shift"], i.name,
                 lazy.window.togroup(i.name, switch_group=True),
-                desc="Switch to & move focused window to group {}".format(i.name)),
+                desc=f"Switch to & move focused window to group {i.name}"),
         ]
     )
 
@@ -138,13 +145,10 @@ layouts = [
 ]
 
 # COLORS
-colo = ["#000000",  # BACKGROUND
-        "#F2A413",  # FONTS
-        "#FFFFFF",
-        "#F2F2F2",
-        "#0D0D0D",
-        "#F2F2F2",
-        "#0D0D0D"]
+colo = ["#000000",  # BLACK
+        "#FFFFFF",  # WHITE
+        "#736870",  # BACKGROUNDS
+        "#F2A413"]  # FONTS
 
 
 # SCREENS
@@ -163,53 +167,69 @@ screens = [
         top=bar.Bar(
             [
                 widget.Clock(
-                    format="%Y.%m.%d || %I:%M",
-                    foreground=colo[1],
+                    format="%I:%M at %d.%m.%Y",
+                    foreground=colo[3],
+                    background=colo[0]
                 ),
+                widget.Prompt(
+                    foreground=colo[2]),
+
                 widget.Spacer(),
 
                 widget.GroupBox(
                     highlight_method="text",
-                    highlight_color=colo[1],
-                    this_current_screen_border=colo[1],
+                    background=colo[0],
+                    this_current_screen_border=colo[3],
                 ),
+
                 widget.Spacer(),
 
-                widget.Battery(
-                    charge_char="charging:",
-                    foreground=colo[1],
-                    discharge_char="discharging",
-                    format="{char}",
-                    background=colo[0]
-                    ),
-                widget.Battery(
-                    foreground=colo[2],
-                    format="{percent:2.0%}  ",
-                    background=colo[0]
-                    ),
                 widget.Wlan(
                     interface="wlp0s20f3",
-                    format='{essid} ',
+                    format='{essid}',
+                    foreground=colo[3],
+                    backgroud=colo[2]
+                ),
+                widget.Battery(
+                    charge_char="charging:",
+                    discharge_char="discharging:",
+                    format="    {char}",
+                    foreground=colo[3],
+                    background=colo[0]
+                ),
+                widget.Battery(
                     foreground=colo[1],
-                    backgroud=colo[0]),
-                widget.Backlight(
-                    format="󰛨 {percent:2.0%}",
-                    backlight_name="intel_backlight",
-                    foreground=colo[2],
+                    format="{percent:2.0%}  ",
                     background=colo[0]
                 ),
                 widget.TextBox(
-                    text="󱄠",
-                    foreground=colo[2],
+                    text="  󱍖",
+                    fontsize=35,
+                    foreground=colo[3],
+                    background=colo[0]
+                ),
+                widget.Backlight(
+                    format="{percent:2.0%}",
+                    backlight_name="intel_backlight",
+                    foreground=colo[1],
+                    background=colo[0]
+                ),
+                widget.TextBox(
+                    text="  󱄠",
+                    fontsize=35,
+                    foreground=colo[3],
                     background=colo[0]
                 ),
                 widget.Volume(  # Requires alsa-utils
                     format="{percent}",
-                    foreground=colo[2],
-                    background=None
+                    background=None,
+                    foreground=colo[1]
                 ),
             ],
-            26,
+            30,
+            border_color=colo[3],
+            border_width=[0, 0, 0, 0],
+            margin=[10, 100, 2, 100],
         ),
     ),
 ]
@@ -232,7 +252,6 @@ bring_front_click = False
 cursor_warp = False
 floating_layout = layout.Floating(
     float_rules=[
-        # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
         Match(wm_class="confirmreset"),  # gitk
         Match(wm_class="makebranch"),  # gitk
