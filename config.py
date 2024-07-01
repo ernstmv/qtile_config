@@ -4,6 +4,7 @@ from libqtile.lazy import lazy
 import os
 import subprocess
 
+
 # KEYS
 mod = "mod4"
 keys = [
@@ -18,7 +19,7 @@ keys = [
 
     Key([mod], "p", lazy.spawncmd(), desc="Spawn prompt"),
 
-    Key([mod], "return", lazy.spawn("terminator"), desc="Terminator"),
+    Key([mod], "return", lazy.spawn("alacritty"), desc="Terminator"),
 
     Key([mod], "i", lazy.window.toggle_floating(), desc="Floating"),
 
@@ -102,7 +103,7 @@ groups = [
         Group("1", label=" "),
         Group("2", label=" "),
         Group("3", label=" "),
-        Group("4", label="󰱯 "),
+        Group("4", label=" "),
         Group("5", label="󰈹 "),
         ]
 
@@ -236,8 +237,11 @@ screens = [
 
 
 # AUTOSTART
-@hook.subscribe.startup
+@hook.subscribe.startup_once
 def autostart():
+    subprocess.Popen(
+            ['picom', '--config',
+                '/home/leviathan/.config/picom/picom.conf', '--daemon'])
     home = os.path.expanduser("~")
     # Don't forget to 'chmod +x' this file
     subprocess.call([home + "/.config/qtile/autostart.sh"])
