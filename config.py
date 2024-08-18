@@ -9,29 +9,30 @@ import subprocess
 mod = "mod4"
 keys = [
 
-    Key([mod], "f", lazy.spawn("chromium"), desc="Firefox"),
+    Key([mod], "p", lazy.spawn("firefox"), desc="Firefox"),
 
-    Key([mod], "w", lazy.spawn("whatsapp-for-linux"), desc="whatsapp"),
+    Key([mod], "o", lazy.spawn("whatsapp-for-linux"), desc="Whatsapp"),
 
-    Key([mod], "s", lazy.spawn("spotify"), desc="spotify"),
+    Key([mod], "i", lazy.spawn("spotify-launcher"), desc="Spotify"),
 
-    Key([mod], "a", lazy.spawn("arduino"), desc="arduino"),
+    Key([mod], "e", lazy.spawn("dolphin"), desc="File explorer"),
 
-    Key([mod], "p", lazy.spawncmd(), desc="Spawn prompt"),
+    Key([mod], "u", lazy.spawn("arduino-ide"), desc="Arduino"),
 
-    Key([mod], "return", lazy.spawn("alacritty"), desc="Terminator"),
+    Key([mod], "m", lazy.spawn("rofi -show drun"), desc="App launcher"),
 
-    Key([mod], "i", lazy.window.toggle_floating(), desc="Floating"),
+    Key([mod], "return", lazy.spawn("alacritty"), desc="Terminal"),
 
-    Key([mod], "backspace", lazy.window.kill(), desc="Kill focused window"),
+    Key([mod], "n", lazy.window.toggle_floating(), desc="Floating"),
+
+    Key([mod], "backspace", lazy.window.kill(), desc="Kill focus window"),
 
     Key([mod], "space", lazy.next_layout(), desc="Full screen"),
 
-    Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
 
     Key([mod], "left", lazy.screen.prev_group(), desc="Mov prev desktop"),
     Key([mod], "right", lazy.screen.next_group(), desc="Mov next desktop"),
-
+    Key([], "Print", lazy.spawn("scrot")),
     # Volume
     Key(
         [], "XF86AudioRaiseVolume",
@@ -100,11 +101,11 @@ mouse = [
 
 # GROUPS
 groups = [
-        Group("1", label=" "),
-        Group("2", label=" "),
-        Group("3", label=" "),
-        Group("4", label=" "),
-        Group("5", label="󰈹 "),
+        Group("1", label="󰇴 "),
+        Group("2", label=" "),
+        Group("3", label=" "),
+        Group("4", label=" "),
+        Group("5", label=" "),
         ]
 
 for i in groups:
@@ -118,44 +119,35 @@ for i in groups:
         ]
     )
 
-# LAYOUTS
-layouts = [
-    layout.Columns(
-                   border_width=2,
-                   margin=6,
-                   border_normal="#000000",
-                   border_focus="#F2A413",
-                   border_on_single=True,
-                   num_columns=3,
-                   margin_on_single=20),
-    layout.Max(
-        border_focus="#F2A413",
-        border_width=2,
-        margin=20,
-        ),
-    # layout.Stack(num_stacks=2),
-    # layout.Bsp(),
-    # layout.Matrix(),
-    # layout.MonadTall(),
-    # layout.MonadWide(),
-    # layout.RatioTile(),
-    # layout.Tile(),
-    # layout.TreeTab(),
-    # layout.VerticalTile(),
-    # layout.Zoomy(),
-]
-
 # COLORS
 colo = ["#000000",  # BLACK
         "#FFFFFF",  # WHITE
-        "#736870",  # BACKGROUNDS
-        "#F2A413"]  # FONTS
+        "#BF2642",  # BACKGROUNDS
+        "#003E6A"]  # FONTS
+
+# LAYOUTS
+layouts = [
+    layout.Columns(
+                   border_width=1,
+                   margin=3,
+                   border_normal=colo[0],
+                   border_focus=colo[3],
+                   border_on_single=True,
+                   num_columns=3,
+                   margin_on_single=3),
+    layout.Max(
+        border_focus=colo[3],
+        border_width=1,
+        margin=3,
+        ),
+]
+
 
 
 # SCREENS
 widget_defaults = dict(
-    font="Terminess Nerd Font Mono Bold",
-    fontsize=20,
+    font="JetBrainsMono Nerd Font",
+    fontsize=15,
     padding=3,
     background=colo[0]
 )
@@ -169,17 +161,13 @@ screens = [
             [
                 widget.Clock(
                     format="%I:%M at %d.%m.%Y",
-                    foreground=colo[3],
-                    background=colo[0]
+                    foreground=colo[2],
                 ),
-                widget.Prompt(
-                    foreground=colo[2]),
-
                 widget.Spacer(),
 
                 widget.GroupBox(
                     highlight_method="text",
-                    background=colo[0],
+                    fontsize=20,
                     this_current_screen_border=colo[3],
                 ),
 
@@ -188,44 +176,31 @@ screens = [
                 widget.Wlan(
                     interface="wlp0s20f3",
                     format='{essid}',
-                    foreground=colo[3],
-                    backgroud=colo[2]
+                    foreground=colo[1],
                 ),
                 widget.Battery(
-                    charge_char="charging:",
-                    discharge_char="discharging:",
-                    format="    {char}",
+                    discharge_char="󰁹",
+                    charge_char="󰚥",
                     foreground=colo[3],
-                    background=colo[0]
-                ),
-                widget.Battery(
-                    foreground=colo[1],
-                    format="{percent:2.0%}  ",
-                    background=colo[0]
+                    update_interval=1,
+                    format="{char} {percent:2.0%}  ",
                 ),
                 widget.TextBox(
-                    text="  󱍖",
-                    fontsize=35,
+                    text=" ",
                     foreground=colo[3],
-                    background=colo[0]
-                ),
-                widget.Backlight(
-                    format="{percent:2.0%}",
-                    backlight_name="intel_backlight",
-                    foreground=colo[1],
-                    background=colo[0]
-                ),
-                widget.TextBox(
-                    text="  󱄠",
-                    fontsize=35,
-                    foreground=colo[3],
-                    background=colo[0]
                 ),
                 widget.Volume(  # Requires alsa-utils
                     format="{percent}",
                     background=None,
-                    foreground=colo[1]
+                    foreground=colo[3]
                 ),
+                widget.TextBox(
+                    text="   ",
+                    foreground="#FF0000",
+                    mouse_callbacks={
+                        'Button1': lazy.spawn('sudo shutdown now')
+                        }
+                )
             ],
             30,
             border_color=colo[3],
@@ -241,7 +216,7 @@ screens = [
 def autostart():
     subprocess.Popen(
             ['picom', '--config',
-                '/home/leviathan/.config/picom/picom.conf', '--daemon'])
+                '/home/user/.config/picom/picom.conf', '--daemon'])
     home = os.path.expanduser("~")
     # Don't forget to 'chmod +x' this file
     subprocess.call([home + "/.config/qtile/autostart.sh"])
