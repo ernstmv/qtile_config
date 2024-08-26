@@ -5,6 +5,8 @@ import os
 import subprocess
 
 
+
+
 # KEYS
 mod = "mod4"
 keys = [
@@ -122,8 +124,8 @@ for i in groups:
 # COLORS
 colo = ["#000000",  # BLACK
         "#FFFFFF",  # WHITE
-        "#BF2642",  # BACKGROUNDS
-        "#003E6A"]  # FONTS
+        "#2D2D2D",  # BACKGROUNDS
+        "#F2F2F2"]  # FONTS
 
 # LAYOUTS
 layouts = [
@@ -131,52 +133,56 @@ layouts = [
                    border_width=1,
                    margin=3,
                    border_normal=colo[0],
-                   border_focus=colo[3],
+                   border_focus=colo[0],
                    border_on_single=True,
                    num_columns=3,
                    margin_on_single=3),
     layout.Max(
-        border_focus=colo[3],
+        border_focus=colo[0],
         border_width=1,
-        margin=3,
+        margin=10,
         ),
 ]
 
 
-
 # SCREENS
 widget_defaults = dict(
-    font="JetBrainsMono Nerd Font",
+    font="Hurmit Nerd Font",
     fontsize=15,
     padding=3,
-    background=colo[0]
+    background=colo[2]
 )
 extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        wallpaper="~/.config/qtile/wpp.jpg",
+        wallpaper="~/.config/qtile/wpp.png",
         wallpaper_mode="fill",
         top=bar.Bar(
             [
                 widget.Clock(
                     format="%I:%M at %d.%m.%Y",
-                    foreground=colo[2],
+                    foreground=colo[3],
                 ),
                 widget.Spacer(),
 
                 widget.GroupBox(
                     highlight_method="text",
+                    active="#000000",
+                    foreground='#FFFFFF',
                     fontsize=20,
-                    this_current_screen_border=colo[3],
                 ),
 
                 widget.Spacer(),
 
                 widget.Wlan(
                     interface="wlp0s20f3",
-                    format='{essid}',
-                    foreground=colo[1],
+                    disconnected_message="",
+                    use_ethernet=True,
+                    ethernet_interface='enp46s0',
+                    ethernet_message="󰈀 Wired",
+                    format=' {essid}',
+                    foreground=colo[3],
                 ),
                 widget.Battery(
                     discharge_char="󰁹",
@@ -191,12 +197,11 @@ screens = [
                 ),
                 widget.Volume(  # Requires alsa-utils
                     format="{percent}",
-                    background=None,
                     foreground=colo[3]
                 ),
                 widget.TextBox(
                     text="   ",
-                    foreground="#FF0000",
+                    foreground='#FF0000',
                     mouse_callbacks={
                         'Button1': lazy.spawn('sudo shutdown now')
                         }
@@ -218,11 +223,17 @@ def autostart():
             ['picom', '--config',
                 '/home/user/.config/picom/picom.conf', '--daemon'])
     home = os.path.expanduser("~")
-    # Don't forget to 'chmod +x' this file
     subprocess.call([home + "/.config/qtile/autostart.sh"])
 
 
-# ETC
+@hook.subscribe.client_new
+def float_to_front(window):
+    if isinstance(window.window.get_wm_class()[1], str):
+        if window.window.get_wm_class()[1] == 'Alacritty':
+            window.floating = True
+            window.bring_to_front()
+
+
 # To be honest, I have no idea what this does.
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: list
@@ -230,6 +241,7 @@ follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
 floating_layout = layout.Floating(
+    border_width=0,
     float_rules=[
         *layout.Floating.default_float_rules,
         Match(wm_class="confirmreset"),  # gitk
@@ -240,6 +252,7 @@ floating_layout = layout.Floating(
         Match(title="pinentry"),  # GPG key password entry
     ]
 )
+
 focus_on_window_activation = "smart"
 reconfigure_screens = True
 wl_input_rules = None
