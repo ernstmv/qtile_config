@@ -5,8 +5,6 @@ import os
 import subprocess
 
 
-
-
 # KEYS
 mod = "mod4"
 keys = [
@@ -16,8 +14,6 @@ keys = [
     Key([mod], "o", lazy.spawn("whatsapp-for-linux"), desc="Whatsapp"),
 
     Key([mod], "i", lazy.spawn("spotify-launcher"), desc="Spotify"),
-
-    Key([mod], "e", lazy.spawn("dolphin"), desc="File explorer"),
 
     Key([mod], "u", lazy.spawn("arduino-ide"), desc="Arduino"),
 
@@ -124,7 +120,7 @@ for i in groups:
 # COLORS
 colo = ["#000000",  # BLACK
         "#FFFFFF",  # WHITE
-        "#2D2D2D",  # BACKGROUNDS
+        "#262626",  # BACKGROUNDS
         "#F2F2F2"]  # FONTS
 
 # LAYOUTS
@@ -133,12 +129,12 @@ layouts = [
                    border_width=1,
                    margin=3,
                    border_normal=colo[0],
-                   border_focus=colo[0],
+                   border_focus=colo[1],
                    border_on_single=True,
                    num_columns=3,
-                   margin_on_single=3),
+                   margin_on_single=1),
     layout.Max(
-        border_focus=colo[0],
+        border_focus=colo[1],
         border_width=1,
         margin=10,
         ),
@@ -147,7 +143,7 @@ layouts = [
 
 # SCREENS
 widget_defaults = dict(
-    font="Hurmit Nerd Font",
+    font="JetBrainsMono Nerd Font",
     fontsize=15,
     padding=3,
     background=colo[2]
@@ -156,7 +152,7 @@ extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        wallpaper="~/.config/qtile/wpp.png",
+        wallpaper="~/.config/qtile/wpp.jpg",
         wallpaper_mode="fill",
         top=bar.Bar(
             [
@@ -181,7 +177,7 @@ screens = [
                     use_ethernet=True,
                     ethernet_interface='enp46s0',
                     ethernet_message="󰈀 Wired",
-                    format=' {essid}',
+                    format='  {essid}',
                     foreground=colo[3],
                 ),
                 widget.Battery(
