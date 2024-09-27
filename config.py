@@ -9,7 +9,7 @@ import subprocess
 mod = "mod4"
 keys = [
 
-    Key([mod], "p", lazy.spawn("firefox"), desc="Firefox"),
+    Key([mod], "p", lazy.spawn("chromium"), desc="Chromium"),
 
     Key([mod], "o", lazy.spawn("whatsapp-for-linux"), desc="Whatsapp"),
 
@@ -121,7 +121,7 @@ for i in groups:
 colo = ["#000000",  # BLACK
         "#FFFFFF",  # WHITE
         "#262626",  # BACKGROUNDS
-        "#F2F2F2"]  # FONTS
+        "#D98859"]  # FONTS
 
 # LAYOUTS
 layouts = [
@@ -129,14 +129,14 @@ layouts = [
                    border_width=1,
                    margin=3,
                    border_normal=colo[0],
-                   border_focus=colo[1],
+                   border_focus=colo[3],
                    border_on_single=True,
                    num_columns=3,
                    margin_on_single=1),
     layout.Max(
         border_focus=colo[1],
-        border_width=1,
-        margin=10,
+        border_width=0,
+        margin=3,
         ),
 ]
 
@@ -152,20 +152,20 @@ extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        wallpaper="~/.config/qtile/wpp.jpg",
+        wallpaper="~/.config/qtile/wpp.png",
         wallpaper_mode="fill",
         top=bar.Bar(
             [
                 widget.Clock(
-                    format="%I:%M at %d.%m.%Y",
+                    format=" %I:%M at %d.%m.%Y",
                     foreground=colo[3],
                 ),
                 widget.Spacer(),
 
                 widget.GroupBox(
                     highlight_method="text",
-                    active="#000000",
-                    foreground='#FFFFFF',
+                    active=colo[3],
+                    block_highlight_text_color=colo[3],
                     fontsize=20,
                 ),
 
@@ -196,7 +196,7 @@ screens = [
                     foreground=colo[3]
                 ),
                 widget.TextBox(
-                    text="   ",
+                    text="    ",
                     foreground='#FF0000',
                     mouse_callbacks={
                         'Button1': lazy.spawn('sudo shutdown now')
@@ -237,7 +237,8 @@ follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
 floating_layout = layout.Floating(
-    border_width=0,
+    border_width=1,
+    border_focus=colo[3],
     float_rules=[
         *layout.Floating.default_float_rules,
         Match(wm_class="confirmreset"),  # gitk
