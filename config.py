@@ -11,11 +11,9 @@ keys = [
 
     Key([mod], "p", lazy.spawn("chromium"), desc="Chromium"),
 
-    Key([mod], "o", lazy.spawn("whatsapp-for-linux"), desc="Whatsapp"),
+    Key([mod], "o", lazy.spawn("spotify-launcher"), desc="Spotify"),
 
-    Key([mod], "i", lazy.spawn("spotify-launcher"), desc="Spotify"),
-
-    Key([mod], "u", lazy.spawn("arduino-ide"), desc="Arduino"),
+    Key([mod], "e", lazy.spawn("nemo"), desc="File explorer"),
 
     Key([mod], "m", lazy.spawn("rofi -show drun"), desc="App launcher"),
 
@@ -30,7 +28,7 @@ keys = [
 
     Key([mod], "left", lazy.screen.prev_group(), desc="Mov prev desktop"),
     Key([mod], "right", lazy.screen.next_group(), desc="Mov next desktop"),
-    Key([], "Print", lazy.spawn("scrot")),
+    Key([], "Print", lazy.spawn("coreshot")),
     # Volume
     Key(
         [], "XF86AudioRaiseVolume",
@@ -82,7 +80,7 @@ keys = [
 
     # Other basic actions
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
-    Key([mod, "control"], "q", lazy.shutdown(), desc="Log out"),
+    Key([mod], "x", lazy.shutdown(), desc="Log out"),
 ]
 
 # MOUSE
@@ -99,11 +97,11 @@ mouse = [
 
 # GROUPS
 groups = [
-        Group("1", label="󰇴 "),
-        Group("2", label=" "),
-        Group("3", label=" "),
-        Group("4", label=" "),
-        Group("5", label=" "),
+        Group("1", label="󰎍 "),
+        Group("2", label="󰎍 "),
+        Group("3", label="󰎍 "),
+        Group("4", label="󰎍 "),
+        Group("5", label="󰎍 "),
         ]
 
 for i in groups:
@@ -120,8 +118,8 @@ for i in groups:
 # COLORS
 colo = ["#000000",  # BLACK
         "#FFFFFF",  # WHITE
-        "#262626",  # BACKGROUNDS
-        "#D98859"]  # FONTS
+        "#2E3440",  # BACKGROUNDS
+      "#4C566A"]  # FONTS
 
 # LAYOUTS
 layouts = [
@@ -173,7 +171,7 @@ screens = [
 
                 widget.Wlan(
                     interface="wlp0s20f3",
-                    disconnected_message="",
+                    disconnected_message="Offline",
                     use_ethernet=True,
                     ethernet_interface='enp46s0',
                     ethernet_message="󰈀 Wired",
@@ -206,7 +204,7 @@ screens = [
             30,
             border_color=colo[3],
             border_width=[0, 0, 0, 0],
-            margin=[10, 100, 2, 100],
+            margin=[5, 100, 5, 100],
         ),
     ),
 ]
