@@ -4,12 +4,15 @@ from libqtile.lazy import lazy
 import os
 import subprocess
 
+def my_func(text):
+    return ""
+
 
 # KEYS
 mod = "mod4"
 keys = [
 
-    Key([mod], "p", lazy.spawn("chromium"), desc="Chromium"),
+    Key([mod], "p", lazy.spawn("firefox"), desc="Browser"),
 
     Key([mod], "o", lazy.spawn("spotify-launcher"), desc="Spotify"),
 
@@ -116,10 +119,28 @@ for i in groups:
     )
 
 # COLORS
-colo = ["#000000",  # BLACK
-        "#FFFFFF",  # WHITE
-        "#2E3440",  # BACKGROUNDS
-      "#4C566A"]  # FONTS
+colo = ["#1A1E26",
+        "#C2BBF2",
+        "#8B56BF",
+        "#F280BF"]
+
+# BCOLORS
+bcolors = [
+        "#734870",
+        "#070A40",
+        "#1A1E26",
+        "#4F5359",
+        "#617355"
+        ]
+
+# FCOLORS
+fcolors = [
+        "#F280BF",
+        "#C2BBF2",
+        "#88A2F2",
+        "#1A1E26",
+        "#617355"
+        ]
 
 # LAYOUTS
 layouts = [
@@ -141,31 +162,59 @@ layouts = [
 
 # SCREENS
 widget_defaults = dict(
-    font="JetBrainsMono Nerd Font",
-    fontsize=15,
-    padding=3,
-    background=colo[2]
+    font="LT Binary Neue Bold",
+    fontsize=12,
+    padding=2,
+    background=colo[0]
 )
 extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        wallpaper="~/.config/qtile/wpp.png",
+        wallpaper="~/.config/qtile/wpp.jpg",
         wallpaper_mode="fill",
         top=bar.Bar(
             [
-                widget.Clock(
-                    format=" %I:%M at %d.%m.%Y",
-                    foreground=colo[3],
+
+                widget.TextBox(
+                    text='  ',
+                    fontsize=20,
+                    mouse_callbacks={
+                        'Button1': lazy.spawn('sudo shutdown now')
+                    },
                 ),
-                widget.Spacer(),
 
                 widget.GroupBox(
                     highlight_method="text",
                     active=colo[3],
                     block_highlight_text_color=colo[3],
                     fontsize=20,
+                    background=bcolors[2]
                 ),
+                widget.TaskList(
+                    highlight_method='block',
+                    parse_text = my_func
+                    ),
+
+                widget.Spacer(),
+
+                widget.NvidiaSensors(
+                    format='󰾅 {temp}°C {perf}', 
+                    foreground=colo[2]
+                    ),
+                widget.ThermalSensor(
+                    foreground=fcolors[0],
+                    format=" {temp:.2f}{unit}"
+                    ),
+                widget.CPU(
+                    foreground=fcolors[0],
+                    format="{freq_current:.2f}GHz"
+                    ),
+                widget.Memory(
+                    foreground=fcolors[2],
+                    format=" {MemUsed:.2f}{mm}",
+                    measure_mem="G"
+                    ),
 
                 widget.Spacer(),
 
@@ -178,33 +227,36 @@ screens = [
                     format='  {essid}',
                     foreground=colo[3],
                 ),
+
                 widget.Battery(
                     discharge_char="󰁹",
                     charge_char="󰚥",
-                    foreground=colo[3],
+                    foreground=fcolors[2],
                     update_interval=1,
-                    format="{char} {percent:2.0%}  ",
+                    format="{char} {percent:2.0%}",
                 ),
+
                 widget.TextBox(
                     text=" ",
-                    foreground=colo[3],
+                    foreground=colo[2],
                 ),
+
                 widget.Volume(  # Requires alsa-utils
                     format="{percent}",
-                    foreground=colo[3]
+                    foreground=colo[2]
                 ),
-                widget.TextBox(
-                    text="    ",
-                    foreground='#FF0000',
-                    mouse_callbacks={
-                        'Button1': lazy.spawn('sudo shutdown now')
-                        }
-                )
+
+
+                widget.Clock(
+                    format="󰥔 %H:%M  %d-%m-%y",
+                    foreground=colo[1],
+                ),
+
             ],
-            30,
-            border_color=colo[3],
-            border_width=[0, 0, 0, 0],
-            margin=[5, 100, 5, 100],
+            20,
+            border_color=colo[2],
+            border_width=[1, 0, 1, 0],
+            margin=[0, 10, 1, 10],
         ),
     ),
 ]
@@ -236,7 +288,7 @@ bring_front_click = False
 cursor_warp = False
 floating_layout = layout.Floating(
     border_width=1,
-    border_focus=colo[3],
+    border_focus=colo[1],
     float_rules=[
         *layout.Floating.default_float_rules,
         Match(wm_class="confirmreset"),  # gitk
